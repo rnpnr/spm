@@ -87,7 +87,7 @@ add() {
 
 	mkdir -p "${STORE_DIR}"/"${group}" &&
 		printf '%s\n' "${password}" |
-			gpg --encrypt --output "${STORE_DIR}"/"${1}"
+			gpg --encrypt --output "${STORE_DIR}"/"${1}.gpg"
 }
 
 list() {
