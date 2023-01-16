@@ -28,7 +28,7 @@ This way users can control access through file ownership, share entries
 entries with symbolic links and more just like any other files.
 .sp
 Group and entry names or expressions are considered relative to the
-storage root directoy.
+storage root directory.
 .Ar expression
 is interpreted as basic regular expression according to
 .Xr re_format 7 .
@@ -44,13 +44,11 @@ is specified, non-existing groups are created automatically and the
 password is stored under
 .Ar group/ Ns Op Ar ../ .
 .It Cm del
-Ask for confirmation and delete the entry matching
+Delete the entry matching
 .Ar expression
 on success.
-.It Cm help
-Print a short usage and refer to this manual page.
 .It Cm list
-Print a recursive, indented tree-style list of all entries in
+Print a recursive list of all entries in
 .Ar group .
 If
 .Ar group
@@ -59,7 +57,7 @@ If the
 .Fl g
 flag is passed only subgroups are shown.
 .It Cm search
-Print the absoloute paths of all entries matching
+Print the absolute paths of all entries matching
 .Ar expression
 one per line.
 .It Cm show
@@ -77,7 +75,7 @@ if they are set and not empty:
 .Bl -tag -width Ds
 .It Ev PASSWORD_STORE_DIR
 The storage root directory.
-This should be an absoloute path.
+This should be an absolute path.
 .It Ev PASSWORD_STORE_KEY
 Key ID used for de/encryption.
 Refer to
@@ -92,7 +90,7 @@ The default storage root directory.
 .Sh EXIT STATUS
 .Nm
 exits 1 if an error occurs otherwise 0.
-.Sh EXAMPlES
+.Sh EXAMPLES
 Add Alice's password to the group
 .Em users :
 .Bd -literal -offset indent
@@ -125,30 +123,27 @@ $ spm search admins/[ab]
 List all users:
 .Bd -literal -offset indent
 $ spm list users
-/home/alice/.spm/users
-|-- alice
-|-- bob
-|-- temporary/
-|   |-- tim
-|   `-- tom
+/home/alice/.spm/users/alice
+/home/alice/.spm/users/bob
+/home/alice/.spm/users/temporary/tim
+/home/alice/.spm/users/temporary/tom
 .Ed
 .sp
 Find entries interactively using
 .Xr dmenu 1 :
 .Bd -literal -offset indent
-$ spm show "$(spm search . | dmenu -l 10)"
+$ spm show "$(spm list | dmenu -l 10)"
 .Ed
 .Sh SEE ALSO
-.Xr dmenu 1,
-.Xr gpg2 1 ,
+.Xr dmenu 1 ,
 .Xr gpg-agent 1 ,
+.Xr gpg2 1 ,
 .Xr tpm 1 ,
-.Xr tree 1 ,
 .Xr re_format 7
-.Sh CAVEATS
-Groups have to be deleted manually using
-.Xr rmdir 1 .
 .Sh AUTHORS
 .Nm
 is written by
 .An Klemens Nanni Aq Mt kl3@posteo.org .
+.Sh CAVEATS
+Groups have to be deleted manually using
+.Xr rmdir 1 .
