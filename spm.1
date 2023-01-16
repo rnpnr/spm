@@ -1,5 +1,6 @@
 .Dd April 21, 2017
 .Dt SPM 1
+.Os
 .Sh NAME
 .Nm spm
 .Nd simple password manager
@@ -11,7 +12,7 @@
 .Nm
 .Cm help
 .Nm
-.Cm list Oo Fl g Oc Op Ar group
+.Cm list Oc Op Ar group
 .Nm
 .Cm search Ar expression
 .Nm
@@ -53,9 +54,6 @@ Print a recursive list of all entries in
 If
 .Ar group
 is omitted, the entire storage root is listed.
-If the
-.Fl g
-flag is passed only subgroups are shown.
 .It Cm search
 Print the absolute paths of all entries matching
 .Ar expression

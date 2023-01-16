@@ -90,9 +90,7 @@ show() {
 }
 
 ## Parse input
-[ ${#} -eq 0 ] || [ ${#} -gt 3 ] ||
-[ ${#} -eq 3 ] && [ "${1:-}" != list ] &&
-	die "spm: wrong number of arguments"
+[ $# -gt 2 ] && die "spm: wrong number of arguments"
 
 case "${1}" in
 add|del|search|show)
@@ -100,11 +98,9 @@ add|del|search|show)
 	${1} "${2}"
 	;;
 list)
-	[ "${2:-}" = -g ] && gflag=1 && shift 1
-	[ ${#} -gt 2 ] && die "spm list: too many arguments"
 	list "${2:-.}"
 	;;
 *)
-	die "usage: ${0} add|del|list [-g]|search|show|help [[group/]entry|expression]"
+	die "usage: ${0} add|del|list|search|show [[group/]entry|expression]"
 	;;
 esac
