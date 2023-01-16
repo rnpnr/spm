@@ -81,8 +81,7 @@ add() {
 
 list() {
 	[ -d "${STORE_DIR}"/"${1:-}" ] || usage 'no such group'
-
-	tree ${gflag:+-d} -Fx -- "${STORE_DIR}"/"${1:-}" | view
+	find "${STORE_DIR}"/"${1:-}" | view
 }
 
 del() {
