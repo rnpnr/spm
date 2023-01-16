@@ -23,21 +23,16 @@ GPG_OPTS='--quiet --yes --batch'
 STORE_DIR="${PASSWORD_STORE_DIR:-${HOME}/.spm}"
 
 ## Helper
-usage() {
-	cat 1>&2 <<-EOF
-	${1:+Error: ${1}}
-	USAGE: ${0##*/} add|del|list [-g]|search|show|help [[group/]entry|expression]
-	See spm(1) for more information.
-	EOF
-
-	exit ${1:+1}
+die() {
+	echo "$@" >&2
+	exit 1
 }
 
 check() {
-	[ -n "${entry}" ] || usage 'no such entry'
+	[ -n "${entry}" ] || die "spm: no such entry"
 
 	[ $(printf '%s' "${entry}" | wc -l) -eq 0 ] ||
-		usage 'ambigious expression'
+		die "spm: ambigious expression"
 }
 
 gpg() {
@@ -52,7 +47,7 @@ readpw() {
 	[ -t 0 ] && stty -echo && printf '%s' "${1}"
 	IFS= read -r "${2}"
 	[ -t 0 ] && stty echo
-	[ -z "${2}" ] && usage 'empty password'
+	[ -z "${2}" ] && die "spm: empty password"
 }
 
 find() {
@@ -61,7 +56,7 @@ find() {
 
 ## Commands
 add() {
-	[ -e "${STORE_DIR}"/"${1}" ] && usage 'entry already exists'
+	[ -e "${STORE_DIR}"/"${1}" ] && die "spm: entry already exists"
 
 	password=
 	readpw "Password for '${1}': " password
@@ -76,7 +71,7 @@ add() {
 }
 
 list() {
-	[ -d "${STORE_DIR}"/"${1:-}" ] || usage 'no such group'
+	[ -d "${STORE_DIR}"/"${1:-}" ] || die "spm list: no such group"
 	find "${STORE_DIR}"/"${1:-}"
 }
 
@@ -97,22 +92,19 @@ show() {
 ## Parse input
 [ ${#} -eq 0 ] || [ ${#} -gt 3 ] ||
 [ ${#} -eq 3 ] && [ "${1:-}" != list ] &&
-	usage 'wrong number of arguments'
+	die "spm: wrong number of arguments"
 
 case "${1}" in
 add|del|search|show)
-	[ -z "${2:-}" ] && usage 'empty name'
+	[ -z "${2:-}" ] && die "spm: empty name"
 	${1} "${2}"
 	;;
 list)
 	[ "${2:-}" = -g ] && gflag=1 && shift 1
-	[ ${#} -gt 2 ] && usage 'too many arguments'
+	[ ${#} -gt 2 ] && die "spm list: too many arguments"
 	list "${2:-.}"
 	;;
-help)
-	usage
-	;;
 *)
-	usage 'invalid command'
+	die "usage: ${0} add|del|list [-g]|search|show|help [[group/]entry|expression]"
 	;;
 esac
